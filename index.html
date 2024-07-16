@@ -1,9 +1,710 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Untitled</title>
+    <!-- <link rel="stylesheet" href="./style.css"> -->
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <style>
+        body,
+        html {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" viewBox="0 0 700 700" width="700" height="700" opacity="1"><defs><linearGradient gradientTransform="rotate(150, 0.5, 0.5)" x1="50%" y1="0%" x2="50%" y2="100%" id="ffflux-gradient"><stop stop-color="hsl(218, 56%, 72%)" stop-opacity="1" offset="0%"></stop><stop stop-color="hsl(227, 100%, 50%)" stop-opacity="1" offset="100%"></stop></linearGradient><filter id="ffflux-filter" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox" primitiveUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.004 0.002" numOctaves="2" seed="2" stitchTiles="stitch" x="0%" y="0%" width="100%" height="100%" result="turbulence"></feTurbulence><feGaussianBlur stdDeviation="27 0" x="0%" y="0%" width="100%" height="100%" in="turbulence" edgeMode="duplicate" result="blur"></feGaussianBlur><feBlend mode="color-dodge" x="0%" y="0%" width="100%" height="100%" in="SourceGraphic" in2="blur" result="blend"></feBlend></filter></defs><rect width="700" height="700" fill="url(%23ffflux-gradient)" filter="url(%23ffflux-filter)"></rect></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+
+            overflow: hidden;
+
+        }
+
+        header {
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav {
+            display: flex;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #fff;
+            /* Light text color */
+            margin-left: 20px;
+        }
+
+        .title-text {
+            font-size: 30px;
+            margin: 20px;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        /* --------------container starts here--------------- */
+        .container {
+            height: 100vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+
+        .side-container {
+            display: flex;
+            flex-direction: column;
+            width: 30%;
+
+        }
+
+        .side-text {
+            margin-left: 20px;
+        }
+
+        /* --------effect bar--------- */
+        .effect-bar-container {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .cylinder-buttons {
+            position: absolute;
+            right: 0;
+            bottom: 40px;
+            /* Adjust as needed */
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .cylinder-button {
+            width: 200px;
+            height: 60px;
+            border-radius: 30px;
+            background-color: #ccc;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding-right: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            right: -150px;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+            margin-bottom: 15px;
+            /* Constant gap between buttons */
+            position: relative;
+        }
+
+        .cylinder-button:hover {
+            transform: translateX(-100px);
+        }
+
+        .cylinder-button-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: relative;
+            left: 10px;
+        }
+
+        .cylinder-button-text {
+            position: relative;
+            left: 7px;
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+        .cylinder-button-symbol {
+            position: relative;
+            font-size: 24px;
+            font-weight: bold;
+            left: -17px;
+        }
+
+        /* --------mid container + canv ----------------- */
+        .mid-container {
+            display: flex;
+            width: 30%;
+            height: 100vh;
+            min-width: 500px;
+            justify-content: center;
+            align-items: flex-end;
+            line-height: 0;
+        }
+
+        #bottom-blur {
+            position: relative;
+            background-color: rgba(49, 58, 128, 0.5);
+            filter: blur(2px);
+            height: 60px;
+            width: 100%;
+            bottom: 50px;
+        }
+
+        #bottom-border {
+            position: relative;
+            background-color: rgba(62, 70, 129, 0.5);
+            filter: blur(0.1px);
+            height: 2px;
+            width: 100%;
+            bottom: 110px;
+        }
+    </style>
+</head>
 
 <body>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
+    <div class="container">
+        <div class="side-container">
+            <b class="title-text">UNTITLED</b>
+            <h2 class="side-text">This is some text on the left</h2>
+        </div>
+        <div class="mid-container">
+            <div id="canv"></div>
+        </div>
+        <div class="side-container">
+            <header>
+                <nav>
+                    <a href="#">Projects</a>
+                    <a href="#">About Me</a>
+                    <a href="#">Button 3</a>
+                </nav>
+            </header>
+            <div class="cylinder-buttons">
+                <div class="cylinder-button" id="cyl-button-5">
+                    <div class="cylinder-button-circle"></div>
+                    <div class="cylinder-button-symbol">&lt;</div>
+                    <div class="cylinder-button-text">Text</div>
+                </div>
+                <div class="cylinder-button" id="cyl-button-4">
+                    <div class="cylinder-button-circle"></div>
+                    <div class="cylinder-button-symbol">&lt;</div>
+                    <div class="cylinder-button-text">Text</div>
+                </div>
+                <div class="cylinder-button" id="cyl-button-3">
+                    <div class="cylinder-button-circle"></div>
+                    <div class="cylinder-button-symbol">&lt;</div>
+                    <div class="cylinder-button-text">Text</div>
+                </div>
+                <div class="cylinder-button" id="cyl-button-2">
+                    <div class="cylinder-button-circle"></div>
+                    <div class="cylinder-button-symbol">&lt;</div>
+                    <div class="cylinder-button-text">FLOATING</div>
+                </div>
+                <div class="cylinder-button" id="cyl-button-1">
+                    <div class="cylinder-button-circle"></div>
+                    <div class="cylinder-button-symbol">&lt;</div>
+                    <div class="cylinder-button-text">GRAVITY</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bottom-blur"></div>
+    <div id="bottom-border"></div>
+    </div>
+
+
+    <!-- ##############################javascript starts here############################## -->
+    <script src="matter.js"></script>
+    <script>
+        const canvasHeight = 1200;
+
+        let engine = Matter.Engine.create({ gravity: { x: 0, y: 0 } });
+        engine.timing.delta = 1000 / 60; // Adjust as needed
+        let world = engine.world;
+        let Composite = Matter.Composite;
+        let Body = Matter.Body;
+        let Bodies = Matter.Bodies;
+        let Constraint = Matter.Constraint;
+
+        let render = Matter.Render.create({
+            element: document.getElementById('canv'),
+            engine: engine,
+            options: {
+                height: 1200,
+                width: 2000,
+                wireframes: false,
+                background: 'transparent',
+            }
+        });
+
+        function createGround(bitId) {
+            return Matter.Bodies.rectangle(
+                1500, canvasHeight,
+                3000, 100,
+                {
+                    label: "ground",
+                    isStatic: true,
+                    render: {
+                        fillStyle: 'rgba(49, 58, 128, 0)',
+                        strokeStyle: 'yellow',
+                    },
+                    collisionFilter: {
+                        category: bitId,
+                        mask: 255,
+                    },
+                });
+        }
+
+        let ground = createGround(1);
+        let groundDefault = createGround(2);
+
+        //%boxinfo
+        const boxInfo = {
+            h: 160,
+            w: 210,
+            gap: 50,
+            netHeight: 160 + 50,
+            num1: 7,
+            num2: 7,
+        };
+
+
+        const boundInfo = {
+            boundCategory: 4,
+            boundMask: 8,
+            width: 20,
+        }
+
+        function addBoundToBox(x, y, w, h, direction) {
+            let box = Bodies.rectangle(
+                x, y, w, h,
+                {
+                    label: 'box',
+                    chamfer: { radius: 25 },
+                    dir: direction,
+                    collisionFilter: {
+                        category: 1,
+                        mask: 1,
+                    }
+                },
+            );
+
+            function createBoundOption() {
+                return {
+                    label: 'bound',
+                    isStatic: true,
+                    friction: 1,
+                    frictionStatic: 1,
+                    render: {
+                        strokeStyle: 'black',
+                        //lineWidth: 1, //dev mode
+                        lineWidth: 0,
+                        fillStyle: 'transparent',
+                    },
+                    collisionFilter: { category: boundInfo.boundCategory, mask: boundInfo.boundMask },
+                }
+            }
+
+            let topBound = Bodies.rectangle(
+                x, y - (h / 2),
+                w, boundInfo.width,
+                createBoundOption(),
+            );
+            let bottomBound = Bodies.rectangle(
+                x, y + (h / 2),
+                w, boundInfo.width,
+                createBoundOption(),
+            );
+            let leftBound = Bodies.rectangle(
+                x - (w / 2), y,
+                boundInfo.width, h,
+                createBoundOption(),
+            );
+            let rightBound = Bodies.rectangle(
+                x + (w / 2), y,
+                boundInfo.width, h,
+                createBoundOption(),
+            );
+
+            return Composite.create({
+                bodies: [box, topBound, bottomBound, leftBound, rightBound],
+            });
+        }
+
+        function createBoxes(info) {
+            let boxes = [];
+            const center = render.options.width / 2
+            const col1posX = center - 130;
+            const col2posX = center + 130;
+
+            for (let i = 0; i < info.num1; i++) {
+                boxWithBound = addBoundToBox(
+                    col1posX,
+                    info.netHeight * i,
+                    info.w,
+                    info.h,
+                    "UP"
+                );
+
+                boxes.push(boxWithBound)
+            }
+
+            for (let i = 0; i < info.num2; i++) {
+                boxWithBound = addBoundToBox(
+                    col2posX,
+                    info.netHeight * i,
+                    info.w,
+                    info.h,
+                    "DOWN"
+                );
+
+                boxes.push(boxWithBound)
+            }
+
+            return boxes;
+        }
+
+        var objectsBoxes = createBoxes(boxInfo);
+
+
+        //#####################effects start here###################
+
+        //%effects
+        var effects = {
+            initEffect: true,
+            gravityOn: false,
+            jumpOn: false,
+            floatingOn: false,
+            character1On: false,
+        }
+
+        //------%initEffect-------
+        const boxSlidingSpeed = 0.2;
+        function initEffect(box) {
+            let position = box.position;
+            let angle = box.angle;
+
+            if (box.dir == "UP") {
+                let upVector = { x: position.x, y: position.y - boxSlidingSpeed }
+                Body.setPosition(box, upVector, true);
+                if (position.y < -boxInfo.netHeight) {
+                    Matter.Body.setPosition(box, {
+                        x: position.x,
+                        y: position.y + boxInfo.netHeight * boxInfo.num1
+                    });
+                }
+            }
+            if (box.dir == "DOWN") {
+                let upVector = { x: position.x, y: position.y + boxSlidingSpeed }
+                Body.setPosition(box, upVector, true);
+                if (position.y > canvasHeight + boxInfo.netHeight) {
+                    Matter.Body.setPosition(box, {
+                        x: position.x,
+                        y: position.y - boxInfo.netHeight * boxInfo.num2
+                    });
+                }
+            }
+
+
+        }
+
+        //----------------%gravity %button----------------
+        var noGroundInit = true;
+        let cylButtonGravity = document.getElementById('cyl-button-1');
+        cylButtonGravity.addEventListener('click', () => {
+            if (effects.gravityOn == false) {
+                //change button color
+                cylButtonGravity.style.backgroundColor = 'green';
+                cylButtonFloating.style.backgroundColor = '#ccc';
+
+                //enable effects
+                effects.jumpOn = true;
+                effects.gravityOn = true;
+                effects.floatingOn = false;
+
+                //add ground
+                if (noGroundInit) {
+                    Matter.World.add(world, ground);
+                    noGroundInit = false;
+                }
+            }
+        });
+
+        function applyGravity(box) {
+            const gravityStrength = 0.00007;
+            const gravityForce = {
+                x: 0,
+                y: box.mass * gravityStrength
+            };
+            Matter.Body.applyForce(box, box.position, gravityForce);
+        }
+
+
+        //----------------%floating %button----------------
+        let cylButtonFloating = document.getElementById('cyl-button-2');
+        cylButtonFloating.addEventListener('click', () => {
+            if (effects.floatingOn == false) {
+                //change button color
+                cylButtonFloating.style.backgroundColor = 'green';
+                cylButtonGravity.style.backgroundColor = '#ccc';
+
+                //enable effects
+                effects.floatingOn = true;
+                effects.jumpOn = true;
+                effects.gravityOn = false;
+            }
+        });
+
+        function controlFloating(box) {
+            let position = box.position;
+
+            Matter.Body.translate(box, {
+                x: 0,
+                y: -0.01,
+            });
+        }
+
+        //----------------%character button %button----------------
+        let cylButtonCharacter = document.getElementById('cyl-button-3');
+        cylButtonCharacter.addEventListener('click', () => {
+            if (effects.character1On == false) {
+                //change button color
+                cylButtonCharacter.style.backgroundColor = 'green';
+
+                //enable effects
+                effects.character1On = true;
+            }
+            else {
+                cylButtonCharacter.style.backgroundColor = '#ccc';
+                effects.character1On = false;
+            }
+        });
+
+        //--------------------------OVERALL EFFECT CONTROL + MOVEMENT--------------------------------
+
+        //----------------%boundry update %bound update-------------
+        function updateBoundryPosition(boxObject) {
+            let box = boxObject.bodies[0];
+            let top = boxObject.bodies[1];
+            let bottom = boxObject.bodies[2];
+            let left = boxObject.bodies[3];
+            let right = boxObject.bodies[4];
+
+            const disableAngle = 20;
+            const boxAngleDegree = ((box.angle / Math.PI * 180) % 360 + 360) % 360;
+
+            var boundOn = Matter.Collision.collides(box, character1.bodies[0]);
+
+            const positionOffset = 10;
+
+            if (!boundOn && (360 - (90 - disableAngle) <= boxAngleDegree || boxAngleDegree <= (90 - disableAngle))) {
+                top.collisionFilter.mask = 0x0008;
+                Body.setPosition(top, {
+                    x: box.position.x + Math.cos((box.angle - (Math.PI / 2))) * ((boxInfo.h - positionOffset) / 2),
+                    y: box.position.y + Math.sin((box.angle - (Math.PI / 2))) * ((boxInfo.h - positionOffset) / 2),
+                }, true);
+            } else { top.collisionFilter.mask = 0x0000; }
+
+            if (!boundOn && (disableAngle <= boxAngleDegree && boxAngleDegree <= (180 - disableAngle))) {
+                left.collisionFilter.mask = 0x0008;
+                Body.setPosition(left, {
+                    x: box.position.x - Math.cos((box.angle)) * ((boxInfo.w - positionOffset) / 2),
+                    y: box.position.y - Math.sin((box.angle)) * ((boxInfo.w - positionOffset) / 2),
+                }, true);
+            } else { left.collisionFilter.mask = 0x0000; }
+
+            if (!boundOn && (90 + disableAngle <= boxAngleDegree && boxAngleDegree <= (270 - disableAngle))) {
+                bottom.collisionFilter.mask = 0x0008;
+                Body.setPosition(bottom, {
+                    x: box.position.x - Math.cos((box.angle - (Math.PI / 2))) * ((boxInfo.h - positionOffset) / 2),
+                    y: box.position.y - Math.sin((box.angle - (Math.PI / 2))) * ((boxInfo.h - positionOffset) / 2),
+                }, true);
+            } else { bottom.collisionFilter.mask = 0x0000; }
+
+            if (!boundOn && (180 + disableAngle <= boxAngleDegree && boxAngleDegree <= (360 - disableAngle))) {
+                right.collisionFilter.mask = 0x0008;
+                Body.setPosition(right, {
+                    x: box.position.x + Math.cos((box.angle)) * ((boxInfo.w - positionOffset) / 2),
+                    y: box.position.y + Math.sin((box.angle)) * ((boxInfo.w - positionOffset) / 2),
+                }, true);
+            } else { right.collisionFilter.mask = 0x0000; }
+
+            Body.setAngle(top, box.angle);
+            Body.setAngle(bottom, box.angle);
+            Body.setAngle(left, box.angle);
+            Body.setAngle(right, box.angle);
+
+            // Body.setVelocity(top, box.velocity);
+            // Body.setVelocity(bottom, box.velocity);
+            // Body.setVelocity(left, box.velocity);
+            // Body.setVelocity(right, box.velocity);
+        }
+
+        // %box movement
+        function controlBoxMovement() {
+            for (let boxObject of objectsBoxes) {
+                let box = boxObject.bodies[0];
+
+                if (effects.jumpOn) {
+                    //disable static
+                    Body.setStatic(box, false);
+                    //jump
+                    let jumpForce = 2;
+                    let randVelo = Math.random() * jumpForce - jumpForce/2;
+                    let randAng = (Math.random() * 0.02) - 0.01;
+                    Matter.Body.setVelocity(box, { x: box.velocity.x + randVelo, y: box.velocity.y - 2 + randVelo });
+                    Matter.Body.setAngularVelocity(box, randAng);
+                    effects.initEffect = false;
+                }
+
+                if (effects.initEffect) {
+                    initEffect(box);
+                }
+                else if (effects.floatingOn) {
+                    controlFloating(box);
+                }
+                else if (effects.gravityOn) {
+                    applyGravity(box);
+                }
+
+                updateBoundryPosition(boxObject);
+            }
+            if (effects.jumpOn) {
+                effects.jumpOn = false;
+            }
+        }
+
+        //-----------------%mouse-------------------------
+        const mouse = Matter.Mouse.create(render.canvas);
+        const mouseConstraint = Matter.MouseConstraint.create(engine, {
+            mouse: mouse
+        });
+        Matter.World.add(world, mouseConstraint);
+
+        document.onmousemove  = function () {
+            window.getSelection().removeAllRanges();
+        };
+
+        //---------------------------------%KEYBOARD %INPUT--------------------------
+        var keyInputs = Array(255).fill(false);
+        document.addEventListener('keydown', event => { keyInputs[event.keyCode] = true; });
+        document.addEventListener('keyup', event => { keyInputs[event.keyCode] = false; });
+
+        //-----------------%player %character----------------
+        const char1WidthHeight = [30, 30];
+        const char1XY = [1000, 800];
+        const character1MomementSpeed = 2;
+
+        const char1Body = Matter.Bodies.rectangle(
+            char1XY[0], char1XY[1],
+            char1WidthHeight[0], char1WidthHeight[1],
+            {
+                label: 'character1', // Add a label for identification
+                canJump: false,
+                mass: 5,
+                angularDamping: 0.9,
+                friction: 1,
+                render: {
+                    fillStyle: 'blue',
+                },
+                collisionFilter: {
+                    category: 8,
+                    mask: 7,
+                },
+                movementSpeed: character1MomementSpeed,
+            }
+        );
+
+        const character1 = Composite.create({
+            bodies: [char1Body],
+        });
+
+        Matter.World.add(world, objectsBoxes);
+        Matter.World.add(world, groundDefault);
+        Matter.World.add(world, character1);
+        Matter.Engine.run(engine);
+        Matter.Render.run(render);
+
+        var canJump = false;
+
+        //%movement %key 
+        function movePlayer(entity) {
+            var moveX = 0;
+            var moveY = 0;
+
+            //gravity
+            Matter.Body.applyForce(entity, entity.position, { x: 0, y: 0.003 });
+
+            //%jump
+            if (keyInputs[38]) { //arrowUp
+                if (canJump && (entity.velocity.y > -4)) {
+                    Matter.Body.applyForce(entity, entity.position, { x: 0, y: -0.18 }); // Apply upward force
+                    canJump = false;
+                }
+            }
+            if (keyInputs[39]) { //arrowRight
+                moveX += entity.movementSpeed;
+            }
+            if (keyInputs[37]) { //arrowLeft
+                moveX -= entity.movementSpeed;
+            }
+            Body.translate(entity, {
+                x: moveX,
+                y: moveY,
+            });
+            Body.setVelocity(entity, {
+                x: moveX,
+                y: entity.velocity.y,
+            });
+
+            //%limit %speed limit
+            let maxSpeed = 10;
+            Body.setVelocity(character1.bodies[0], {
+                x: character1.bodies[0].velocity.x,
+                y: Math.min(maxSpeed, character1.bodies[0].velocity.y),
+            });
+        }
+
+        //------------AFTER / BEFORE %UPDATE---------------------
+
+
+        Matter.Events.on(engine, "afterUpdate", function (event) {
+            controlBoxMovement();
+        });
+
+        Matter.Events.on(engine, "beforeUpdate", function (event) {
+            movePlayer(character1.bodies[0]);
+        });
+
+        Matter.Events.on(engine, 'collisionStart', function (event) {
+            const pairs = event.pairs;
+            var canJumpCheck = false;
+            pairs.forEach(function (pair) {
+                if (pair.bodyA.label === "character1" && ["ground", "bound"].includes(pair.bodyB.label)) {
+                    canJumpCheck = true;
+                    // Body.setAngle(character1.bodies[0], pair.bodyB.angle);
+                    // console.log(character1.bodies[0].angle / Math.PI * 180);
+                }
+                else if (pair.bodyB.label === "character1" && ["ground", "bound"].includes(pair.bodyA.label)) {
+                    canJumpCheck = true;
+                }
+            });
+            if (canJumpCheck) {
+                canJump = true;
+            }
+            else {
+                canJump = false;
+            }
+        });
+
+
+
+
+    </script>
 </body>
 
 </html>
